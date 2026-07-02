@@ -154,10 +154,94 @@ const deleteTicket = async (req, res) => {
   }
 };
 
+const getAllTickets = async (req, res) => {
+  try {
+    const tickets = await Ticket.find()
+      .populate("customer", "name email")
+      .populate("assignedAgent", "name email");
+
+    res.status(200).json({
+      success: true,
+      tickets,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const assignTicket = async (req, res) => {
+  try {
+    const ticket = await Ticket.findById(req.params.id);
+
+    if (!ticket) {
+      return res.status(404).json({
+        success: false,
+        message: "Ticket not found",
+      });
+    }
+
+    ticket.assignedAgent = req.user._id;
+    ticket.status = "In Progress";
+
+    await ticket.save();
+
+    res.status(200).json({
+      success: true,
+      ticket,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+
+const updateTicketStatus = async (req, res) => {
+  try {
+
+    const ticket = await Ticket.findById(req.params.id);
+
+    if (!ticket) {
+      return res.status(404).json({
+        success: false,
+        message: "Ticket not found",
+      });
+    }
+
+    ticket.status = req.body.status;
+
+    await ticket.save();
+
+    res.status(200).json({
+      success: true,
+      ticket,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+
+
 module.exports = {
   createTicket,
   getMyTickets,
   getTicketById,
   updateTicket,
   deleteTicket,
+  getAllTickets,
+  assignTicket,
+  updateTicketStatus,
 };
