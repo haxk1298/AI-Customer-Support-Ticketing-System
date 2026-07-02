@@ -3,6 +3,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const testRoutes = require("./routes/testRoutes");
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(cookieParser());
 app.use(helmet());
 
 app.use(morgan("dev"));
+
+app.use("/api/test", testRoutes);
 
 app.get("/", (req, res) => {
     res.json({
