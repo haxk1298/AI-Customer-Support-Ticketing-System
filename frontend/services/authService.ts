@@ -44,3 +44,38 @@ export const getMyTickets = async () => {
 
   return response.data;
 };
+
+export const assignTicket = async (ticketId: string) => {
+  const token = localStorage.getItem("token");
+
+  const response = await api.put(
+    `/tickets/assign/${ticketId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const updateTicketStatus = async (
+  ticketId: string,
+  status: string
+) => {
+  const token = localStorage.getItem("token");
+
+  const response = await api.put(
+    `/tickets/status/${ticketId}`,
+    { status },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
