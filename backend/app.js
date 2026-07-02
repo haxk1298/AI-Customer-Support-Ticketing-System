@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const authRoutes = require("./routes/authRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.use(morgan("dev"));
 app.use("/api/auth", authRoutes);
 
 app.use("/api/tickets", ticketRoutes);
+
+app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
     res.json({
