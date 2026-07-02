@@ -1,0 +1,36 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Next
+.next/
+out/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Mongo
+mongodb-data/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Build
+dist/
+build/
+
+# Coverage
+coverage/
