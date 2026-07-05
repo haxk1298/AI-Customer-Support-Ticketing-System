@@ -2,10 +2,31 @@
 
 import { useEffect, useState } from "react";
 import api from "@/services/api";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+const COLORS = [
+            "#10B981",
+            "#3B82F6",
+            "#F59E0B", 
+            "#EF4444", 
+            "#8B5CF6",
+          ];
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
   const [users, setUsers] = useState<any[]>([]);
+  const [analytics, setAnalytics] = useState<any>(null);
 
   const token =
     typeof window !== "undefined"
@@ -26,6 +47,13 @@ export default function AdminDashboard() {
         },
       });
 
+      const analyticsRes = await api.get("/admin/analytics", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setAnalytics(analyticsRes.data);
       setStats(statsRes.data.stats);
       setUsers(usersRes.data.users);
     } catch (error) {
@@ -60,7 +88,7 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
 
-      <h1 className="mb-8 text-4xl font-bold text-blue-700">
+      <h1 className="mb-8 text-4xl font-bold text-emerald-700">
         Admin Dashboard
       </h1>
 
@@ -73,7 +101,7 @@ export default function AdminDashboard() {
             Total Users
           </h2>
 
-          <p className="mt-4 text-4xl font-bold text-blue-600">
+          <p className="mt-4 text-4xl font-bold text-green-600">
             {stats.totalUsers}
           </p>
         </div>
@@ -83,7 +111,7 @@ export default function AdminDashboard() {
             Total Tickets
           </h2>
 
-          <p className="mt-4 text-4xl font-bold text-green-600">
+          <p className="mt-4 text-4xl font-bold text-blue-600">
             {stats.totalTickets}
           </p>
         </div>
@@ -123,7 +151,7 @@ export default function AdminDashboard() {
             Resolved
           </h2>
 
-          <p className="mt-4 text-4xl font-bold text-green-700">
+          <p className="mt-4 text-4xl font-bold text-emerald-700">
             {stats.resolvedTickets}
           </p>
         </div>
@@ -142,7 +170,7 @@ export default function AdminDashboard() {
 
           <thead>
 
-            <tr className="bg-blue-700 text-white">
+            <tr className="bg-emerald-700 text-white">
 
               <th className="p-4">Name</th>
 
@@ -212,7 +240,60 @@ export default function AdminDashboard() {
         </table>
 
       </div>
+            {analytics && (
+  <div className="mt-10 grid grid-cols-2 gap-8">
 
+    <div className="rounded bg-white p-6 shadow">
+
+      <h2 className="mb-4 text-xl font-bold text-black">
+        Tickets by Category
+      </h2>
+
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={analytics.categoryChart}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="value" fill="#0658a9"/>
+        </BarChart>
+      </ResponsiveContainer>
+
+    </div>
+
+    <div className="rounded bg-white p-6 shadow">
+
+      <h2 className="mb-4 text-xl font-bold text-black">
+        Ticket Status
+      </h2>
+
+      <ResponsiveContainer width="100%" height={300}>
+        <PieChart>
+          <Pie
+            data={analytics.statusChart}
+            dataKey="value"
+            nameKey="name"
+            outerRadius={100}
+            label
+          >
+            {analytics.statusChart.map((entry: any, index: number) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+
+          <Tooltip />
+
+        </PieChart>
+      </ResponsiveContainer>
+
+    </div>
+
+  </div>
+)}
     </div>
   );
 }

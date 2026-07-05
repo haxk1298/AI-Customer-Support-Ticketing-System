@@ -43,7 +43,7 @@ export default function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-lg rounded-lg bg-white p-8 shadow-lg">
-        <h2 className="mb-6 text-center text-3xl font-bold text-blue-700">
+        <h2 className="mb-6 text-center text-3xl font-bold text-emerald-700">
           Register
         </h2>
 
@@ -77,7 +77,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded bg-green-600 py-3 text-white hover:bg-green-700"
+            className="w-full rounded bg-emerald-700 py-3 text-white hover:bg-emerald-700"
           >
             {loading ? "Registering..." : "Register"}
           </button>

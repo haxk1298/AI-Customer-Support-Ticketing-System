@@ -34,7 +34,13 @@ export default function LoginPage() {
 
       alert("Login Successful!");
 
-      router.push("/customer");
+      if (data.user.role === "admin") {
+        router.push("/admin");
+      } else if (data.user.role === "agent") {
+        router.push("/agent");
+      } else {
+        router.push("/customer");
+      }
     } catch (error: any) {
       alert(error.response?.data?.message || "Login Failed");
     } finally {
@@ -45,7 +51,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
-        <h2 className="mb-6 text-center text-3xl font-bold text-blue-700">
+        <h2 className="mb-6 text-center text-3xl font-bold text-emerald-700">
           Login
         </h2>
 
@@ -71,7 +77,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded bg-blue-600 py-3 text-white hover:bg-blue-700"
+            className="w-full rounded bg-emerald-700 py-3 text-white hover:bg-emerald-700"
           >
             {loading ? "Logging In..." : "Login"}
           </button>

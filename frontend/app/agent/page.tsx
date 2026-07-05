@@ -63,7 +63,7 @@ export default function AgentDashboard() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
 
-      <h1 className="mb-8 text-4xl font-bold text-blue-700">
+      <h1 className="mb-8 text-4xl font-bold text-emerald-700">
         Agent Dashboard
       </h1>
 
@@ -96,13 +96,15 @@ export default function AgentDashboard() {
 
         <thead>
 
-          <tr className="bg-blue-700 text-white">
+          <tr className="bg-emerald-700 text-white">
 
             <th className="p-4">Title</th>
 
             <th>Customer</th>
 
             <th>Priority</th>
+
+            <th>Category</th>
 
             <th>Status</th>
 
@@ -136,6 +138,10 @@ export default function AgentDashboard() {
               </td>
 
               <td>
+                {ticket.category}
+              </td>
+
+              <td>
                 {ticket.status}
               </td>
 
@@ -143,7 +149,7 @@ export default function AgentDashboard() {
 
                 {ticket.assignedAgent ? (
 
-                  <span className="text-green-600 font-bold">
+                  <span className="text-orange-600 font-bold">
                     Assigned
                   </span>
 
@@ -153,7 +159,7 @@ export default function AgentDashboard() {
                     onClick={() =>
                       handleAssign(ticket._id)
                     }
-                    className="rounded bg-green-600 px-4 py-2 text-white"
+                    className="rounded bg-orange-600 px-4 py-2 text-white"
                   >
                     Assign To Me
                   </button>

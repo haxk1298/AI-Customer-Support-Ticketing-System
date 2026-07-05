@@ -6,7 +6,7 @@ export default function Home() {
       <Navbar />
 
       <main className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
-        <h1 className="text-5xl font-bold text-blue-700">
+        <h1 className="text-5xl font-bold text-emerald-700">
           AI Customer Support Ticketing System
         </h1>
 
@@ -17,14 +17,14 @@ export default function Home() {
         <div className="mt-10 flex gap-4">
           <a
             href="/login"
-            className="rounded bg-blue-600 px-6 py-3 text-white hover:bg-blue-700"
+            className="rounded bg-emerald-700 px-6 py-3 text-white hover:bg-emerald-700"
           >
             Login
           </a>
 
           <a
             href="/register"
-            className="rounded border border-blue-600 px-6 py-3 text-blue-700 hover:bg-blue-50"
+            className="rounded border border-emerald-700 px-6 py-3 text-emerald-700 hover:bg-emerald-50"
           >
             Register
           </a>

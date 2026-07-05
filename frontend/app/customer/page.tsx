@@ -14,8 +14,6 @@ export default function CustomerDashboard() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    category: "General",
-    priority: "Low",
   });
 
   const loadTickets = async () => {
@@ -51,8 +49,6 @@ export default function CustomerDashboard() {
       setFormData({
         title: "",
         description: "",
-        category: "General",
-        priority: "Low",
       });
 
       loadTickets();
@@ -65,7 +61,7 @@ export default function CustomerDashboard() {
   return (
     <div className="min-h-screen bg-gray-100 p-10">
 
-      <h1 className="text-4xl font-bold text-blue-700">
+      <h1 className="text-4xl font-bold text-emerald-700">
         Welcome {user?.name}
       </h1>
 
@@ -96,33 +92,8 @@ export default function CustomerDashboard() {
             className="w-full rounded border p-3 text-black"
           />
 
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="w-full rounded border p-3 text-black"
-          >
-            <option>General</option>
-            <option>Technical</option>
-            <option>Billing</option>
-            <option>Account</option>
-            <option>Refund</option>
-          </select>
-
-          <select
-            name="priority"
-            value={formData.priority}
-            onChange={handleChange}
-            className="w-full rounded border p-3 text-black"
-          >
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
-            <option>Critical</option>
-          </select>
-
           <button
-            className="rounded bg-blue-600 px-8 py-3 text-white"
+            className="rounded bg-emerald-600 px-8 py-3 text-white"
           >
             Create Ticket
           </button>
@@ -140,7 +111,7 @@ export default function CustomerDashboard() {
 
           <thead>
 
-            <tr className="bg-blue-600 text-white">
+            <tr className="bg-emerald-600 text-white">
 
               <th className="p-3">Title</th>
 
