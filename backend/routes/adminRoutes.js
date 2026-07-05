@@ -6,6 +6,7 @@ const {
   getDashboardStats,
   getAllUsers,
   updateUserRole,
+  getAnalytics,
 } = require("../controllers/adminController");
 
 const {
@@ -32,6 +33,13 @@ router.put(
   protect,
   authorize("admin"),
   updateUserRole
+);
+
+router.get(
+  "/analytics",
+  protect,
+  authorize("admin"),
+  getAnalytics
 );
 
 module.exports = router;

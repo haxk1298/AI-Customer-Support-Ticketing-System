@@ -1,15 +1,27 @@
+const axios = require("axios");
+
 const Ticket = require("../models/Ticket");
 
 // Create Ticket
 const createTicket = async (req, res) => {
   try {
-    const { title, description, category, priority } = req.body;
+    const { title, description } = req.body;
+
+    const aiResponse = await axios.post(
+      "http://127.0.0.1:5001/predict",
+      {
+        text: description,
+      }
+    );
+
+    const predictedCategory = aiResponse.data.category;
+    const predictedPriority = aiResponse.data.priority;
 
     const ticket = await Ticket.create({
       title,
       description,
-      category,
-      priority,
+      category: predictedCategory,
+      priority: predictedPriority,
       customer: req.user._id,
     });
 
@@ -17,11 +29,14 @@ const createTicket = async (req, res) => {
       success: true,
       ticket,
     });
+
   } catch (error) {
+
     res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
 

@@ -99,8 +99,54 @@ const updateUserRole = async (req, res) => {
   }
 };
 
+const getAnalytics = async (req, res) => {
+  try {
+
+    const tickets = await Ticket.find();
+
+    const categoryData = {};
+
+    const statusData = {};
+
+    tickets.forEach(ticket => {
+
+      categoryData[ticket.category] =
+        (categoryData[ticket.category] || 0) + 1;
+
+      statusData[ticket.status] =
+        (statusData[ticket.status] || 0) + 1;
+
+    });
+
+    const categoryChart = Object.keys(categoryData).map(key => ({
+      name: key,
+      value: categoryData[key]
+    }));
+
+    const statusChart = Object.keys(statusData).map(key => ({
+      name: key,
+      value: statusData[key]
+    }));
+
+    res.json({
+      success: true,
+      categoryChart,
+      statusChart
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+};
+
 module.exports = {
   getDashboardStats,
   getAllUsers,
   updateUserRole,
+  getAnalytics,
 };
