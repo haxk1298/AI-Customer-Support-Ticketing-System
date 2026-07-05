@@ -16,12 +16,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 const COLORS = [
-            "#10B981",
-            "#3B82F6",
-            "#F59E0B", 
-            "#EF4444", 
-            "#8B5CF6",
-          ];
+  "#10B981",
+  "#3B82F6",
+  "#F59E0B",
+  "#EF4444",
+  "#8B5CF6",
+];
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -240,60 +240,76 @@ export default function AdminDashboard() {
         </table>
 
       </div>
-            {analytics && (
-  <div className="mt-10 grid grid-cols-2 gap-8">
+      {analytics && (
+        <div className="mt-10 grid grid-cols-2 gap-8">
 
-    <div className="rounded bg-white p-6 shadow">
+          <div className="rounded bg-white p-6 shadow">
 
-      <h2 className="mb-4 text-xl font-bold text-black">
-        Tickets by Category
-      </h2>
+            <h2 className="mb-4 text-xl font-bold text-black">
+              Tickets by Category
+            </h2>
 
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={analytics.categoryChart}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="value" fill="#0658a9"/>
-        </BarChart>
-      </ResponsiveContainer>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={analytics.categoryChart}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" fill="#0658a9" />
+              </BarChart>
+            </ResponsiveContainer>
 
-    </div>
+          </div>
 
-    <div className="rounded bg-white p-6 shadow">
+          <div className="rounded bg-white p-6 shadow">
 
-      <h2 className="mb-4 text-xl font-bold text-black">
-        Ticket Status
-      </h2>
+            <h2 className="mb-4 text-xl font-bold text-black">
+              Ticket Status
+            </h2>
 
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
-            data={analytics.statusChart}
-            dataKey="value"
-            nameKey="name"
-            outerRadius={100}
-            label
-          >
-            {analytics.statusChart.map((entry: any, index: number) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={analytics.statusChart}
+                  dataKey="value"
+                  nameKey="name"
+                  outerRadius={100}
+                  label
+                >
+                  {analytics.statusChart.map((entry: any, index: number) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
 
-          <Tooltip />
+                <Tooltip />
 
-        </PieChart>
-      </ResponsiveContainer>
+              </PieChart>
+            </ResponsiveContainer>
 
-    </div>
+          </div>
 
-  </div>
-)}
+          <div className="rounded bg-white p-6 shadow">
+
+            <h2 className="text-lg font-semibold text-black">
+
+              SLA Compliance
+
+            </h2>
+
+            <p className="mt-4 text-4xl font-bold text-green-600">
+
+              {stats.slaCompliance}%
+
+            </p>
+
+          </div>
+
+        </div>
+      )}
     </div>
   );
 }

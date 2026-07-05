@@ -112,6 +112,10 @@ export default function AgentDashboard() {
 
             <th>Update Status</th>
 
+            <th>SLA Deadline</th>
+
+            <th>Remaining</th>
+
           </tr>
 
         </thead>
@@ -144,6 +148,15 @@ export default function AgentDashboard() {
               <td>
                 {ticket.status}
               </td>
+
+              <td>
+
+                {new Date(ticket.slaDeadline)
+                .toLocaleString()}
+
+              </td>
+
+              <td>{ticket.remainingTime}</td>
 
               <td>
 

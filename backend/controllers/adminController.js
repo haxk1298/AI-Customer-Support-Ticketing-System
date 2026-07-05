@@ -24,6 +24,19 @@ const getDashboardStats = async (req, res) => {
       status: "Resolved",
     });
 
+    const overdueTickets =
+        await Ticket.countDocuments({
+            slaStatus:"Overdue"
+    });
+
+    const compliance =
+    totalTickets===0
+    ?100
+    :(
+    ((totalTickets-overdueTickets)
+    /totalTickets)*100
+    ).toFixed(1);
+
     res.json({
       success: true,
       stats: {
@@ -33,6 +46,7 @@ const getDashboardStats = async (req, res) => {
         totalCustomers,
         openTickets,
         resolvedTickets,
+        slaCompliance:compliance,
       },
     });
 

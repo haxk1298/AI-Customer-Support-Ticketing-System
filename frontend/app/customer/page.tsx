@@ -121,6 +121,10 @@ export default function CustomerDashboard() {
 
               <th>Category</th>
 
+              <th>SLA Deadline</th>
+
+              <th>Remaining</th>
+
             </tr>
 
           </thead>
@@ -141,6 +145,13 @@ export default function CustomerDashboard() {
                 <td>{ticket.priority}</td>
 
                 <td>{ticket.category}</td>
+
+                <td>
+                  {new Date(ticket.slaDeadline)
+                  .toLocaleString()}
+                </td>
+
+                <td>{ticket.remainingTime}</td>
 
               </tr>
 

@@ -31,6 +31,16 @@ const ticketSchema = new mongoose.Schema(
       default: "Low",
     },
 
+    slaDeadline: {
+        type: Date,
+    },
+
+    slaStatus: {
+        type: String,
+        enum: ["On Time", "Due Soon", "Overdue"],
+        default: "On Time",
+    },
+
     status: {
       type: String,
       enum: [

@@ -2,6 +2,38 @@ const axios = require("axios");
 
 const Ticket = require("../models/Ticket");
 
+const calculateSLA = require("../utils/slaCalculator");
+
+const updateSLAStatus = require("../utils/updateSLAStatus");
+
+const getRemainingTime = (deadline) => {
+
+  const now = new Date();
+
+  const end = new Date(deadline);
+
+  const diff = end - now;
+
+  if (diff <= 0) return "Expired";
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  const hours = Math.floor(
+    (diff % (1000 * 60 * 60 * 24)) /
+      (1000 * 60 * 60)
+  );
+
+  const minutes = Math.floor(
+    (diff % (1000 * 60 * 60)) /
+      (1000 * 60)
+  );
+
+  if (days > 0)
+    return `${days}d ${hours}h`;
+
+  return `${hours}h ${minutes}m`;
+};
+
 // Create Ticket
 const createTicket = async (req, res) => {
   try {
@@ -16,13 +48,15 @@ const createTicket = async (req, res) => {
 
     const predictedCategory = aiResponse.data.category;
     const predictedPriority = aiResponse.data.priority;
+    const slaDeadline = calculateSLA(predictedPriority);
 
     const ticket = await Ticket.create({
-      title,
-      description,
-      category: predictedCategory,
-      priority: predictedPriority,
-      customer: req.user._id,
+        title,
+        description,
+        category: predictedCategory,
+        priority: predictedPriority,
+        slaDeadline,
+        customer: req.user._id,
     });
 
     res.status(201).json({
@@ -43,25 +77,44 @@ const createTicket = async (req, res) => {
 // Get My Tickets
 const getMyTickets = async (req, res) => {
   try {
+
     const tickets = await Ticket.find({
       customer: req.user._id,
     });
+
+    for (const ticket of tickets) {
+
+      const status = updateSLAStatus(ticket);
+
+      if (ticket.slaStatus !== status) {
+        ticket.slaStatus = status;
+        ticket.remainingTime = getRemainingTime(
+        ticket.slaDeadline
+        );
+        await ticket.save();
+      }
+
+    }
 
     res.status(200).json({
       success: true,
       tickets,
     });
+
   } catch (error) {
+
     res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
 
 // Get Single Ticket
 const getTicketById = async (req, res) => {
   try {
+
     const ticket = await Ticket.findById(req.params.id);
 
     if (!ticket) {
@@ -78,15 +131,26 @@ const getTicketById = async (req, res) => {
       });
     }
 
+    const status = updateSLAStatus(ticket);
+
+    if (ticket.slaStatus !== status) {
+      ticket.slaStatus = status;
+      ticket.remainingTime = getRemainingTime(ticket.slaDeadline);
+      await ticket.save();
+    }
+
     res.status(200).json({
       success: true,
       ticket,
     });
+
   } catch (error) {
+
     res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
 
@@ -171,19 +235,35 @@ const deleteTicket = async (req, res) => {
 
 const getAllTickets = async (req, res) => {
   try {
+
     const tickets = await Ticket.find()
       .populate("customer", "name email")
       .populate("assignedAgent", "name email");
+
+    for (const ticket of tickets) {
+
+      const status = updateSLAStatus(ticket);
+
+      if (ticket.slaStatus !== status) {
+        ticket.slaStatus = status;
+        ticket.remainingTime = getRemainingTime(ticket.slaDeadline);
+        await ticket.save();
+      }
+
+    }
 
     res.status(200).json({
       success: true,
       tickets,
     });
+
   } catch (error) {
+
     res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
 
