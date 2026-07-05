@@ -1,0 +1,16 @@
+text,category,priority
+Laptop not charging,Technical,High
+Battery drains quickly,Technical,Medium
+Application crashes,Technical,High
+Blue screen error,Technical,Critical
+Unable to login,Account,Medium
+Forgot password,Account,Low
+Account locked,Account,High
+Charged twice,Billing,High
+Wrong invoice,Billing,Medium
+Refund not received,Refund,Medium
+Need refund,Refund,Low
+Payment failed,Billing,High
+General enquiry,General,Low
+Need information,General,Low
+Feature request,General,Low
